@@ -41,6 +41,11 @@ $request_uri = $_SERVER['REQUEST_URI'];
 $path = parse_url($request_uri, PHP_URL_PATH);
 $path = str_replace('/api', '', $path);
 
+// Если путь передан как GET параметр
+if (isset($_GET['path'])) {
+    $path = $_GET['path'];
+}
+
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
         handleGet($path, $config, $db);

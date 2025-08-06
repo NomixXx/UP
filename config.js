@@ -30,7 +30,7 @@ const ServerUtils = {
     // Проверка доступности сервера
     async checkServerConnection() {
         try {
-            const response = await fetch(CURRENT_CONFIG.apiUrl + '/health');
+            const response = await fetch(CURRENT_CONFIG.apiUrl + '?path=/health');
             return response.ok;
         } catch (error) {
             console.warn('Сервер недоступен, работаем в автономном режиме');
@@ -65,7 +65,7 @@ const ServerUtils = {
         formData.append('subsectionId', subsectionId);
         
         try {
-            const response = await fetch(CURRENT_CONFIG.apiUrl + '/upload', {
+            const response = await fetch(CURRENT_CONFIG.apiUrl + '?path=/upload', {
                 method: 'POST',
                 body: formData
             });
@@ -90,7 +90,7 @@ const ServerUtils = {
     // Сохранение данных на сервер
     async saveData(key, data) {
         try {
-            const response = await fetch(CURRENT_CONFIG.apiUrl + '/data', {
+            const response = await fetch(CURRENT_CONFIG.apiUrl + '?path=/data', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -110,7 +110,7 @@ const ServerUtils = {
     // Загрузка данных с сервера
     async loadData(key) {
         try {
-            const response = await fetch(CURRENT_CONFIG.apiUrl + '/data/' + key);
+            const response = await fetch(CURRENT_CONFIG.apiUrl + '?path=/data/' + key);
             if (response.ok) {
                 const result = await response.json();
                 return result.data;
