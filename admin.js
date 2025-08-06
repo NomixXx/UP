@@ -12,18 +12,15 @@ class AdminSectionManager {
     constructor() {
         this.sections = JSON.parse(localStorage.getItem('uptaxi_sections')) || [];
         this.users = JSON.parse(localStorage.getItem('uptaxi_users')) || [];
-        this.content = JSON.parse(localStorage.getItem('uptaxi_content')) || {};
-        this.googleDocs = JSON.parse(localStorage.getItem('uptaxi_googleDocs')) || [];
+        this.news = JSON.parse(localStorage.getItem('uptaxi_news')) || [];
+        this.menu = JSON.parse(localStorage.getItem('uptaxi_menu')) || [];
+        this.settings = JSON.parse(localStorage.getItem('uptaxi_settings')) || {};
         this.files = JSON.parse(localStorage.getItem('uptaxi_files')) || [];
-        this.activities = JSON.parse(localStorage.getItem('uptaxi_activities')) || [];
-        this.accessLevels = JSON.parse(localStorage.getItem('uptaxi_accessLevels')) || [
+        this.accessLevels = [
             { id: 1, name: 'Базовый', description: 'Базовый уровень доступа' },
             { id: 2, name: 'Расширенный', description: 'Расширенный уровень доступа' },
             { id: 3, name: 'Полный', description: 'Полный уровень доступа' }
         ];
-        
-        // Убедиться, что уровни доступа сохранены
-        this.saveAccessLevels();
     }
 
     saveSections() {

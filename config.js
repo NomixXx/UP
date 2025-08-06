@@ -2,15 +2,15 @@
 const CONFIG = {
     // Настройки для локальной разработки
     development: {
-        apiUrl: 'http://localhost:3000/api',
-        uploadUrl: 'http://localhost:3000/uploads',
+        apiUrl: '/server-api.php',
+        uploadUrl: '/uploads',
         maxFileSize: 10 * 1024 * 1024, // 10MB
         allowedFileTypes: ['image/*', 'application/pdf', '.doc', '.docx', '.xls', '.xlsx', '.txt']
     },
     
     // Настройки для продакшена
     production: {
-        apiUrl: '/api',
+        apiUrl: '/server-api.php',
         uploadUrl: '/uploads',
         maxFileSize: 50 * 1024 * 1024, // 50MB
         allowedFileTypes: ['image/*', 'application/pdf', '.doc', '.docx', '.xls', '.xlsx', '.txt', '.zip', '.rar']
@@ -42,7 +42,7 @@ const ServerUtils = {
     async syncData() {
         // Загрузка всех данных с сервера
         try {
-            const keys = ['uptaxi_sections', 'uptaxi_users', 'uptaxi_content', 'uptaxi_googleDocs', 'uptaxi_files', 'uptaxi_activities', 'uptaxi_accessLevels'];
+            const keys = ['uptaxi_sections', 'uptaxi_users', 'uptaxi_news', 'uptaxi_menu', 'uptaxi_settings'];
             for (const key of keys) {
                 const data = await this.loadData(key);
                 if (data) {
