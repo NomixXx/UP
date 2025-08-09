@@ -1,43 +1,80 @@
 // Система управления разделами (импорт из админ-панели)
 class SectionManager {
     constructor() {
-        // Попытка синхронизации с сервером при инициализации
-        this.syncWithServer();
-        this.sections = JSON.parse(localStorage.getItem('uptaxi_sections')) || [
-            { 
-                id: 'section1', 
-                name: 'Раздел 1', 
-                icon: '📁',
-                accessLevel: 1,
-                subsections: [
-                    { id: 'subsection1', name: 'Подраздел 1', accessLevel: 1 },
-                    { id: 'subsection2', name: 'Подраздел 2', accessLevel: 2 },
-                    { id: 'subsection3', name: 'Подраздел 3', accessLevel: 3 }
-                ]
-            },
-            { 
-                id: 'section2', 
-                name: 'Раздел 2', 
-                icon: '📂',
-                accessLevel: 2,
-                subsections: [
-                    { id: 'subsection1', name: 'Подраздел 1', accessLevel: 2 },
-                    { id: 'subsection2', name: 'Подраздел 2', accessLevel: 2 },
-                    { id: 'subsection3', name: 'Подраздел 3', accessLevel: 3 }
-                ]
-            },
-            { 
-                id: 'section3', 
-                name: 'Раздел 3', 
-                icon: '📋',
-                accessLevel: 3,
-                subsections: [
-                    { id: 'subsection1', name: 'Подраздел 1', accessLevel: 3 },
-                    { id: 'subsection2', name: 'Подраздел 2', accessLevel: 3 },
-                    { id: 'subsection3', name: 'Подраздел 3', accessLevel: 3 }
-                ]
-            }
-        ];
+        try {
+            this.sections = JSON.parse(localStorage.getItem('uptaxi_sections')) || [
+                { 
+                    id: 'section1', 
+                    name: 'Раздел 1', 
+                    icon: '📁',
+                    accessLevel: 1,
+                    subsections: [
+                        { id: 'subsection1', name: 'Подраздел 1', accessLevel: 1 },
+                        { id: 'subsection2', name: 'Подраздел 2', accessLevel: 2 },
+                        { id: 'subsection3', name: 'Подраздел 3', accessLevel: 3 }
+                    ]
+                },
+                { 
+                    id: 'section2', 
+                    name: 'Раздел 2', 
+                    icon: '📂',
+                    accessLevel: 2,
+                    subsections: [
+                        { id: 'subsection1', name: 'Подраздел 1', accessLevel: 2 },
+                        { id: 'subsection2', name: 'Подраздел 2', accessLevel: 2 },
+                        { id: 'subsection3', name: 'Подраздел 3', accessLevel: 3 }
+                    ]
+                },
+                { 
+                    id: 'section3', 
+                    name: 'Раздел 3', 
+                    icon: '📋',
+                    accessLevel: 3,
+                    subsections: [
+                        { id: 'subsection1', name: 'Подраздел 1', accessLevel: 3 },
+                        { id: 'subsection2', name: 'Подраздел 2', accessLevel: 3 },
+                        { id: 'subsection3', name: 'Подраздел 3', accessLevel: 3 }
+                    ]
+                }
+            ];
+        } catch (error) {
+            console.warn('Ошибка чтения разделов из localStorage:', error);
+            this.sections = [
+                { 
+                    id: 'section1', 
+                    name: 'Раздел 1', 
+                    icon: '📁',
+                    accessLevel: 1,
+                    subsections: [
+                        { id: 'subsection1', name: 'Подраздел 1', accessLevel: 1 },
+                        { id: 'subsection2', name: 'Подраздел 2', accessLevel: 2 },
+                        { id: 'subsection3', name: 'Подраздел 3', accessLevel: 3 }
+                    ]
+                },
+                { 
+                    id: 'section2', 
+                    name: 'Раздел 2', 
+                    icon: '📂',
+                    accessLevel: 2,
+                    subsections: [
+                        { id: 'subsection1', name: 'Подраздел 1', accessLevel: 2 },
+                        { id: 'subsection2', name: 'Подраздел 2', accessLevel: 2 },
+                        { id: 'subsection3', name: 'Подраздел 3', accessLevel: 3 }
+                    ]
+                },
+                { 
+                    id: 'section3', 
+                    name: 'Раздел 3', 
+                    icon: '📋',
+                    accessLevel: 3,
+                    subsections: [
+                        { id: 'subsection1', name: 'Подраздел 1', accessLevel: 3 },
+                        { id: 'subsection2', name: 'Подраздел 2', accessLevel: 3 },
+                        { id: 'subsection3', name: 'Подраздел 3', accessLevel: 3 }
+                    ]
+                }
+            ];
+        }
     }
 
     getSections() {
@@ -64,6 +101,15 @@ class SectionManager {
 
 // Глобальный экземпляр менеджера разделов
 const sectionManager = new SectionManager();
+
+// Асинхронная инициализация синхронизации с сервером
+(async function initializeSync() {
+    try {
+        await sectionManager.syncWithServer();
+    } catch (error) {
+        console.warn('Ошибка синхронизации при инициализации:', error);
+    }
+})();
 
 // Система управления контентом
 class ContentManager {

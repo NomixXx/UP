@@ -1,11 +1,24 @@
 // Система аутентификации
 class AuthSystem {
     constructor() {
-        this.users = JSON.parse(localStorage.getItem('uptaxi_users')) || [
-            { username: 'admin', password: 'admin123', role: 'admin', accessLevel: 10 },
-            { username: 'user', password: 'user123', role: 'user', accessLevel: 1 }
-        ];
-        this.currentUser = JSON.parse(localStorage.getItem('uptaxi_currentUser')) || null;
+        try {
+             this.users = JSON.parse(localStorage.getItem('uptaxi_users')) || [
+                 { username: 'admin', password: 'admin123', role: 'admin', accessLevel: 10 },
+                 { username: 'user', password: 'user123', role: 'user', accessLevel: 1 }
+             ];
+         } catch (error) {
+             console.warn('Ошибка чтения пользователей из localStorage:', error);
+             this.users = [
+                 { username: 'admin', password: 'admin123', role: 'admin', accessLevel: 10 },
+                 { username: 'user', password: 'user123', role: 'user', accessLevel: 1 }
+             ];
+         }
+        try {
+             this.currentUser = JSON.parse(localStorage.getItem('uptaxi_currentUser')) || null;
+         } catch (error) {
+             console.warn('Ошибка чтения текущего пользователя из localStorage:', error);
+             this.currentUser = null;
+         }
         
         // Ensure all users have accessLevel set
         let needsSave = false;
@@ -22,12 +35,16 @@ class AuthSystem {
     }
 
     saveUsers() {
-        localStorage.setItem('uptaxi_users', JSON.stringify(this.users));
-        // Сохранение на сервер если доступен
-        if (typeof ServerUtils !== 'undefined' && serverAvailable) {
-            ServerUtils.saveData('uptaxi_users', this.users);
-        }
-    }
+         try {
+             localStorage.setItem('uptaxi_users', JSON.stringify(this.users));
+         } catch (error) {
+             console.error('Ошибка сохранения пользователей в localStorage:', error);
+         }
+         // Сохранение на сервер если доступен
+         if (typeof ServerUtils !== 'undefined' && serverAvailable) {
+             ServerUtils.saveData('uptaxi_users', this.users);
+         }
+      }
 
     async login(username, password) {
         // Синхронизация с сервером перед входом
@@ -66,7 +83,11 @@ class AuthSystem {
             
             console.log('Пользователь вошел в систему:', sessionUser);
             this.currentUser = sessionUser;
-            localStorage.setItem('uptaxi_currentUser', JSON.stringify(sessionUser));
+            try {
+                localStorage.setItem('uptaxi_currentUser', JSON.stringify(sessionUser));
+            } catch (error) {
+                console.error('Ошибка сохранения текущего пользователя в localStorage:', error);
+            }
             return true;
         }
         return false;

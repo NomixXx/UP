@@ -10,12 +10,47 @@ function checkAdminAuth() {
 // Система управления разделами (импорт из menu.js)
 class AdminSectionManager {
     constructor() {
-        this.sections = JSON.parse(localStorage.getItem('uptaxi_sections')) || [];
-        this.users = JSON.parse(localStorage.getItem('uptaxi_users')) || [];
-        this.news = JSON.parse(localStorage.getItem('uptaxi_news')) || [];
-        this.menu = JSON.parse(localStorage.getItem('uptaxi_menu')) || [];
-        this.settings = JSON.parse(localStorage.getItem('uptaxi_settings')) || {};
-        this.files = JSON.parse(localStorage.getItem('uptaxi_files')) || [];
+        try {
+            this.sections = JSON.parse(localStorage.getItem('uptaxi_sections')) || [];
+        } catch (error) {
+            console.warn('Ошибка чтения разделов из localStorage:', error);
+            this.sections = [];
+        }
+        
+        try {
+            this.users = JSON.parse(localStorage.getItem('uptaxi_users')) || [];
+        } catch (error) {
+            console.warn('Ошибка чтения пользователей из localStorage:', error);
+            this.users = [];
+        }
+        
+        try {
+            this.news = JSON.parse(localStorage.getItem('uptaxi_news')) || [];
+        } catch (error) {
+            console.warn('Ошибка чтения новостей из localStorage:', error);
+            this.news = [];
+        }
+        
+        try {
+            this.menu = JSON.parse(localStorage.getItem('uptaxi_menu')) || [];
+        } catch (error) {
+            console.warn('Ошибка чтения меню из localStorage:', error);
+            this.menu = [];
+        }
+        
+        try {
+            this.settings = JSON.parse(localStorage.getItem('uptaxi_settings')) || {};
+        } catch (error) {
+            console.warn('Ошибка чтения настроек из localStorage:', error);
+            this.settings = {};
+        }
+        
+        try {
+            this.files = JSON.parse(localStorage.getItem('uptaxi_files')) || [];
+        } catch (error) {
+            console.warn('Ошибка чтения файлов из localStorage:', error);
+            this.files = [];
+        }
         this.accessLevels = [
             { id: 1, name: 'Базовый', description: 'Базовый уровень доступа' },
             { id: 2, name: 'Расширенный', description: 'Расширенный уровень доступа' },
@@ -24,7 +59,11 @@ class AdminSectionManager {
     }
 
     saveSections() {
-        localStorage.setItem('uptaxi_sections', JSON.stringify(this.sections));
+        try {
+            localStorage.setItem('uptaxi_sections', JSON.stringify(this.sections));
+        } catch (error) {
+            console.error('Ошибка сохранения разделов в localStorage:', error);
+        }
         // Сохранение на сервер если доступен
         if (typeof ServerUtils !== 'undefined' && serverAvailable) {
             ServerUtils.saveData('uptaxi_sections', this.sections);
@@ -34,7 +73,11 @@ class AdminSectionManager {
     }
 
     saveUsers() {
-        localStorage.setItem('uptaxi_users', JSON.stringify(this.users));
+        try {
+            localStorage.setItem('uptaxi_users', JSON.stringify(this.users));
+        } catch (error) {
+            console.error('Ошибка сохранения пользователей в localStorage:', error);
+        }
         // Сохранение на сервер если доступен
         if (typeof ServerUtils !== 'undefined' && serverAvailable) {
             ServerUtils.saveData('uptaxi_users', this.users);
@@ -42,10 +85,26 @@ class AdminSectionManager {
     }
 
     saveContent() {
-        localStorage.setItem('uptaxi_content', JSON.stringify(this.content));
-        localStorage.setItem('uptaxi_googleDocs', JSON.stringify(this.googleDocs));
-        localStorage.setItem('uptaxi_files', JSON.stringify(this.files));
-        localStorage.setItem('uptaxi_activities', JSON.stringify(this.activities));
+        try {
+            localStorage.setItem('uptaxi_content', JSON.stringify(this.content));
+        } catch (error) {
+            console.error('Ошибка сохранения контента в localStorage:', error);
+        }
+        try {
+            localStorage.setItem('uptaxi_googleDocs', JSON.stringify(this.googleDocs));
+        } catch (error) {
+            console.error('Ошибка сохранения Google Docs в localStorage:', error);
+        }
+        try {
+            localStorage.setItem('uptaxi_files', JSON.stringify(this.files));
+        } catch (error) {
+            console.error('Ошибка сохранения файлов в localStorage:', error);
+        }
+        try {
+            localStorage.setItem('uptaxi_activities', JSON.stringify(this.activities));
+        } catch (error) {
+            console.error('Ошибка сохранения активностей в localStorage:', error);
+        }
     }
 
     saveAccessLevels() {
@@ -996,7 +1055,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Убедиться, что админ имеет максимальный уровень доступа
     if (user.role === 'admin' && (!user.accessLevel || user.accessLevel < 10)) {
         user.accessLevel = 10;
-        localStorage.setItem('uptaxi_currentUser', JSON.stringify(user));
+        try {
+            localStorage.setItem('uptaxi_currentUser', JSON.stringify(user));
+        } catch (error) {
+            console.error('Ошибка сохранения текущего пользователя в localStorage:', error);
+        }
         // Обновить в списке пользователей
         const userIndex = auth.users.findIndex(u => u.username === user.username);
         if (userIndex !== -1) {
@@ -1012,10 +1075,33 @@ document.addEventListener('DOMContentLoaded', function() {
     updateAccessLevelSelects();
     
     // Синхронизировать данные с основной системой
-    adminManager.content = JSON.parse(localStorage.getItem('uptaxi_content')) || {};
-    adminManager.googleDocs = JSON.parse(localStorage.getItem('uptaxi_googleDocs')) || [];
-    adminManager.files = JSON.parse(localStorage.getItem('uptaxi_files')) || [];
-    adminManager.activities = JSON.parse(localStorage.getItem('uptaxi_activities')) || [];
+    try {
+        adminManager.content = JSON.parse(localStorage.getItem('uptaxi_content')) || {};
+    } catch (error) {
+        console.warn('Ошибка чтения контента из localStorage:', error);
+        adminManager.content = {};
+    }
+    
+    try {
+        adminManager.googleDocs = JSON.parse(localStorage.getItem('uptaxi_googleDocs')) || [];
+    } catch (error) {
+        console.warn('Ошибка чтения Google Docs из localStorage:', error);
+        adminManager.googleDocs = [];
+    }
+    
+    try {
+        adminManager.files = JSON.parse(localStorage.getItem('uptaxi_files')) || [];
+    } catch (error) {
+        console.warn('Ошибка чтения файлов из localStorage:', error);
+        adminManager.files = [];
+    }
+    
+    try {
+        adminManager.activities = JSON.parse(localStorage.getItem('uptaxi_activities')) || [];
+    } catch (error) {
+        console.warn('Ошибка чтения активностей из localStorage:', error);
+        adminManager.activities = [];
+    }
     
     console.log('Данные синхронизированы:', {
         content: adminManager.content,

@@ -46,8 +46,12 @@ const ServerUtils = {
             for (const key of keys) {
                 const data = await this.loadData(key);
                 if (data) {
-                    localStorage.setItem(key, JSON.stringify(data));
-                    console.log(`Синхронизированы данные: ${key}`);
+                    try {
+                        localStorage.setItem(key, JSON.stringify(data));
+                        console.log(`Синхронизированы данные: ${key}`);
+                    } catch (storageError) {
+                        console.warn(`Ошибка записи в localStorage для ${key}:`, storageError);
+                    }
                 }
             }
             return true;
@@ -103,7 +107,11 @@ const ServerUtils = {
             }
         } catch (error) {
             console.warn('Не удалось сохранить на сервер, используем localStorage');
-            localStorage.setItem(key, JSON.stringify(data));
+            try {
+                localStorage.setItem(key, JSON.stringify(data));
+            } catch (storageError) {
+                console.error('Ошибка записи в localStorage:', storageError);
+            }
         }
     },
     
@@ -120,7 +128,12 @@ const ServerUtils = {
         }
         
         // Fallback к localStorage
-        const localData = localStorage.getItem(key);
-        return localData ? JSON.parse(localData) : null;
+        try {
+            const localData = localStorage.getItem(key);
+            return localData ? JSON.parse(localData) : null;
+        } catch (error) {
+            console.warn('Ошибка чтения localStorage:', error);
+            return null;
+        }
     }
 };
