@@ -2,16 +2,16 @@
 const CONFIG = {
     // Настройки для локальной разработки
     development: {
-        apiUrl: '/server-api.php',
-        uploadUrl: '/uploads',
+        apiUrl: 'http://localhost:8080/server-api.php',
+        uploadUrl: 'http://localhost:8080/uploads',
         maxFileSize: 10 * 1024 * 1024, // 10MB
         allowedFileTypes: ['image/*', 'application/pdf', '.doc', '.docx', '.xls', '.xlsx', '.txt']
     },
     
     // Настройки для продакшена
     production: {
-        apiUrl: '/server-api.php',
-        uploadUrl: '/uploads',
+        apiUrl: 'https://portal-uptaxi.duckdns.org/server-api.php',
+        uploadUrl: 'https://portal-uptaxi.duckdns.org/uploads',
         maxFileSize: 50 * 1024 * 1024, // 50MB
         allowedFileTypes: ['image/*', 'application/pdf', '.doc', '.docx', '.xls', '.xlsx', '.txt', '.zip', '.rar']
     }
@@ -21,6 +21,13 @@ const CONFIG = {
 const ENVIRONMENT = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
     ? 'development' 
     : 'production';
+
+// Настройки для удаленного сервера
+const REMOTE_SERVER = {
+    baseUrl: 'https://portal-uptaxi.duckdns.org',
+    apiUrl: 'https://portal-uptaxi.duckdns.org/server-api.php',
+    uploadUrl: 'https://portal-uptaxi.duckdns.org/uploads'
+};
 
 // Экспорт текущей конфигурации
 const CURRENT_CONFIG = CONFIG[ENVIRONMENT];

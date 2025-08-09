@@ -5,9 +5,22 @@
 require_once 'database-config.php';
 
 header('Content-Type: application/json');
-header('Access-Control-Allow-Origin: *');
+// Allow both production and development origins
+$allowed_origins = [
+    'https://portal-uptaxi.duckdns.org',
+    'http://localhost:8080',
+    'http://127.0.0.1:8080'
+];
+
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+if (in_array($origin, $allowed_origins)) {
+    header('Access-Control-Allow-Origin: ' . $origin);
+} else {
+    header('Access-Control-Allow-Origin: http://localhost:8080'); // Default for development
+}
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
+header('Access-Control-Allow-Credentials: true');
 
 // Обработка preflight запросов
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {

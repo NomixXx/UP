@@ -5,8 +5,8 @@ class DatabaseConfig {
     // Настройки подключения к базе данных
     private static $host = 'localhost';
     private static $dbname = 'uptaxi_portal';
-    private static $username = 'root';
-    private static $password = '';
+    private static $username = 'uptaxi_user';
+    private static $password = 'your_secure_password_here';
     private static $charset = 'utf8mb4';
     
     private static $pdo = null;
