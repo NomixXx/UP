@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="3.9.0" method="upgrade">
+    <name>COM_UPTAXI</name>
+    <author>UpTaxi Team</author>
+    <creationDate>2025-01-01</creationDate>
+    <copyright>Copyright (C) 2025 UpTaxi. All rights reserved.</copyright>
+    <license>GNU General Public License version 2 or later</license>
+    <authorEmail>admin@uptaxi.com</authorEmail>
+    <authorUrl>https://uptaxi.com</authorUrl>
+    <version>1.0.0</version>
+    <description>COM_UPTAXI_XML_DESCRIPTION</description>
+
+    <install>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+        </sql>
+    </install>
+
+    <uninstall>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+        </sql>
+    </uninstall>
+
+    <update>
+        <schemas>
+            <schemapath type="mysql">sql/updates/mysql</schemapath>
+        </schemas>
+    </update>
+
+    <files folder="site">
+        <filename>index.html</filename>
+        <filename>uptaxi.php</filename>
+        <filename>controller.php</filename>
+        <folder>views</folder>
+        <folder>models</folder>
+        <folder>helpers</folder>
+        <folder>assets</folder>
+    </files>
+
+    <administration>
+        <menu>COM_UPTAXI</menu>
+        <files folder="admin">
+            <filename>index.html</filename>
+            <filename>uptaxi.php</filename>
+            <filename>controller.php</filename>
+            <filename>config.xml</filename>
+            <folder>controllers</folder>
+            <folder>models</folder>
+            <folder>views</folder>
+            <folder>helpers</folder>
+            <folder>sql</folder>
+            <folder>language</folder>
+        </files>
+        <languages folder="admin">
+            <language tag="en-GB">language/en-GB/en-GB.com_uptaxi.ini</language>
+            <language tag="en-GB">language/en-GB/en-GB.com_uptaxi.sys.ini</language>
+            <language tag="ru-RU">language/ru-RU/ru-RU.com_uptaxi.ini</language>
+            <language tag="ru-RU">language/ru-RU/ru-RU.com_uptaxi.sys.ini</language>
+        </languages>
+    </administration>
+
+    <languages folder="site">
+        <language tag="en-GB">language/en-GB/en-GB.com_uptaxi.ini</language>
+        <language tag="ru-RU">language/ru-RU/ru-RU.com_uptaxi.ini</language>
+    </languages>
+</extension>
